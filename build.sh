@@ -10,7 +10,7 @@
 # tracked files — handy for eyeballing what Cloudflare will actually serve.
 #
 #   $ bash build.sh
-#   $ open dist/README.md      # (no index.html — this is a file-listing site)
+#   $ open dist/index.html
 #
 set -euo pipefail
 

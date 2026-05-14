@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="What has the City of Troy, Michigan spent on Information Technology over time — and what does that money run? A data-driven analysis from 21 audited ACFRs and 18 Adopted Budgets, FY2004-FY2026.">
+<title>What the City of Troy Spends on IT — A Data-Driven Look, FY2004–FY2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #faf8f3;
+    --bg-elevated: #ffffff;
+    --rule: #e6e2d6;
+    --rule-strong: #c5bfae;
+    --text: #1a1a1a;
+    --text-soft: #5a5a5a;
+    --text-faint: #8a8a8a;
+    --accent: #2d6a9f;        /* civic blue */
+    --accent-soft: #d4e3ef;
+    --positive: #2e6e4f;
+    --neutral: #7a6f55;
+    --max-prose: 680px;
+    --max-wide: 1100px;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .container { max-width: var(--max-wide); margin: 0 auto; padding: 0 28px; }
+  .prose { max-width: var(--max-prose); margin: 0 auto; }
+
+  h1, h2, h3, h4 {
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.4em;
+  }
+  h1 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 700; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700; margin-top: 1.4em; }
+  section > .container > .prose > h2:first-child { margin-top: 0; }
+  h3 { font-size: 1.3rem; font-weight: 600; margin-top: 2em; color: var(--text); }
+  h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.6em; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+  p { margin: 0 0 1.1em; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); transition: border-color .15s; }
+  a:hover { border-bottom-color: var(--accent); }
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text); }
+  ul { margin: 0 0 1.2em 1.4em; padding: 0; }
+  ul li { margin-bottom: 6px; }
+
+  /* Masthead */
+  .masthead {
+    border-bottom: 1px solid var(--rule);
+    padding: 16px 0;
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(250, 248, 243, 0.94);
+    backdrop-filter: blur(6px);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+  }
+  .masthead-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+  .brand { font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
+  .brand a { color: var(--text); border: none; }
+  .nav-meta { color: var(--text-faint); display: flex; gap: 18px; align-items: center; }
+  .nav-meta a { color: var(--text-soft); border: none; }
+  .nav-meta a:hover { color: var(--accent); }
+  .brand-short { display: none; }
+
+  /* Hero */
+  .hero { padding: 60px 0 30px; }
+  .kicker {
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.78rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .deck {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.3rem;
+    line-height: 1.5;
+    color: var(--text-soft);
+    margin: 18px 0 32px;
+    font-weight: 400;
+  }
+  .byline {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-faint);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: center;
+  }
+  .byline strong { color: var(--text); font-weight: 500; }
+
+  /* TL;DR */
+  .tldr {
+    margin: 50px auto;
+    padding: 28px 32px;
+    background: var(--bg-elevated);
+    border-left: 4px solid var(--accent);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    max-width: var(--max-prose);
+  }
+  .tldr h4 { margin-top: 0; color: var(--accent); }
+  .tldr p { margin-bottom: 0.7em; }
+  .tldr p:last-child { margin-bottom: 0; }
+
+  /* Sections */
+  section { padding: 12px 0; }
+  .section-divider {
+    text-align: center;
+    margin: 28px 0;
+    color: var(--text-faint);
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.3em;
+    font-size: 0.8rem;
+  }
+
+  /* Pull quote */
+  .pull-quote {
+    font-size: 1.5rem;
+    line-height: 1.35;
+    color: var(--accent);
+    font-style: italic;
+    border-left: 3px solid var(--accent);
+    padding-left: 28px;
+    margin: 40px auto;
+    max-width: 600px;
+  }
+
+  /* Stat callouts */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin: 28px 0;
+  }
+  .stat {
+    padding: 22px 24px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+  }
+  .stat-number {
+    font-family: 'Inter', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    line-height: 1.4;
+  }
+
+  /* Chart container */
+  .chart-block { margin: 32px auto; max-width: var(--max-wide); }
+  .chart-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 4px;
+  }
+  .chart-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    margin: 0 0 18px;
+    font-weight: 400;
+  }
+  .chart-wrap {
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 24px;
+    position: relative;
+  }
+  .chart-canvas-wrap { position: relative; height: 400px; }
+  .chart-source {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+  .chart-source a { color: var(--text-soft); border-bottom-color: var(--rule-strong); }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin: 20px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.86rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+  th {
+    font-weight: 600;
+    color: var(--text-soft);
+    background: var(--bg);
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    position: sticky; top: 0;
+  }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr:hover td { background: var(--bg); }
+
+  /* Per-section collapsible panels */
+  .section-sources {
+    margin: 28px auto 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    max-width: var(--max-prose);
+  }
+  .section-sources.wide { max-width: var(--max-wide); }
+  .section-sources summary {
+    padding: 12px 18px;
+    cursor: pointer;
+    color: var(--text-soft);
+    font-weight: 500;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    user-select: none;
+  }
+  .section-sources summary::-webkit-details-marker { display: none; }
+  .section-sources summary::before {
+    content: '▸';
+    display: inline-block;
+    font-size: 0.8em;
+    color: var(--accent);
+    transition: transform 0.15s;
+  }
+  .section-sources[open] summary::before { transform: rotate(90deg); }
+  .section-sources summary:hover { color: var(--accent); }
+  .section-sources .panel-body {
+    padding: 8px 22px 18px;
+    border-top: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .section-sources ol { padding-left: 22px; }
+  .section-sources li { margin: 12px 0 0; color: var(--text-soft); line-height: 1.55; }
+  .section-sources li a { color: var(--accent); border-bottom-color: var(--accent-soft); }
+  .section-sources .panel-body table { margin-top: 12px; }
+  .src-meta { color: var(--text-faint); font-size: 0.85em; }
+
+  /* Footer */
+  footer {
+    margin-top: 90px;
+    padding: 50px 0 80px;
+    background: var(--bg-elevated);
+    border-top: 1px solid var(--rule);
+    color: var(--text-soft);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+  }
+  footer h4 { color: var(--text); margin-top: 0; }
+  footer a { color: var(--text-soft); border-bottom-color: var(--rule-strong); }
+  footer a:hover { color: var(--accent); }
+  .colophon { color: var(--text-faint); font-size: 0.82rem; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--rule); }
+
+  @media (max-width: 640px) {
+    body { font-size: 17px; }
+    .container { padding: 0 18px; }
+    .chart-canvas-wrap { height: 340px; }
+    .pull-quote { font-size: 1.2rem; padding-left: 18px; }
+    .tldr { padding: 22px 22px; }
+    .stat-grid { gap: 14px; }
+    .stat-number { font-size: 1.7rem; }
+    .masthead { padding: 10px 0; font-size: 0.78rem; }
+    .masthead-inner { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .brand-long { display: none; }
+    .brand-short { display: inline; }
+    .nav-meta { width: 100%; gap: 14px; overflow-x: auto; flex-wrap: nowrap; white-space: nowrap; scrollbar-width: none; }
+    .nav-meta::-webkit-scrollbar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container masthead-inner">
+    <div class="brand"><a href="#top"><span class="brand-short">Troy IT Spend</span><span class="brand-long">City of Troy · IT Spending Analysis</span></a></div>
+    <nav class="nav-meta">
+      <a href="#spend">The Spend</a>
+      <a href="#maintains">What It Runs</a>
+      <a href="#asset-spend">Asset Spend</a>
+      <a href="#method">Method</a>
+      <a href="https://github.com/akarpo/cot-it">Source</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<div class="container">
+  <article class="hero prose">
+    <div class="kicker">Working analysis · May 2026</div>
+    <h1>What the City of Troy spends on IT</h1>
+    <p class="deck">
+      Troy runs Information Technology as an <strong>internal service fund</strong>, so 21 years of audited financial reports show its full cost as a single line of business — and the city's Adopted Budgets show what that money actually runs. Here is what the numbers say, FY2004 through FY2026.
+    </p>
+    <div class="byline">
+      <span><strong>Sources:</strong> 21 City of Troy Annual Comprehensive Financial Reports (ACFRs, FY2005–FY2025) and 18 Adopted Budget documents (FY2006–FY2026) with an IT-division Performance Indicators table. Every figure is reproducible from the scripts in the <a href="https://github.com/akarpo/cot-it">cot-it repository</a>.</span>
+    </div>
+  </article>
+
+  <!-- TL;DR -->
+  <aside class="tldr">
+    <h4>The short version</h4>
+    <p>The IT internal service fund's <strong>operating expenses grew from $1.50M in FY2005 to $2.68M in FY2025</strong> — up 78% in twenty years, about 2.9%/yr, modestly faster than the ~2.6%/yr of general inflation over the same span. The low point was FY2010 ($1.35M), in the post-2008 austerity; the steepest recent growth was FY2024–FY2025 (+12%/yr).</p>
+    <p>What grew is not the <em>fleet</em> — Troy's personal-computer count is essentially flat over 22 years (~530 → ~595, +12%), the profile of a built-out city. What grew is <strong>applications</strong>: the number of supported software packages went from 70 to 168 (+140%), run by the same roughly 9–10-person team. More systems, same staff.</p>
+    <p>IT <strong>asset spend</strong> is lumpy, not a trend. The adopted IT capital budget swings between $40K and $749K year to year — spikes are one-time projects (the FY2008 financial-system replacement, an FY2020 $500K line, the FY2025 $290K database/disaster-recovery rebuild) — averaging about $190K/yr. Equipment maintenance is the steady $6K–$43K/yr cost of keeping the existing fleet alive.</p>
+  </aside>
+</div>
+
+<div class="section-divider">·  ·  ·</div>
+
+<!-- SECTION 1: THE SPEND -->
+<section id="spend">
+<div class="container">
+  <div class="prose">
+    <h2>1. IT runs as an internal service fund</h2>
+    <p>
+      Troy does not bury IT inside the general fund. It runs as an <strong>internal service fund</strong> (ISF): a self-contained business that bills every other city department for the technology services it provides. That structure is why 21 years of ACFRs each carry IT as its own set of financial statements — and why "what does Troy spend on IT?" has a clean answer.
+    </p>
+    <p>
+      The measure used here is the <strong>total operating expenses of the IT internal service fund</strong> — personnel, supplies, and other service charges, plus depreciation. It excludes capital-asset purchases, which flow through the fund's balance sheet rather than its operating statement (those are covered in <a href="#asset-spend">Section 3</a>).
+    </p>
+  </div>
+
+  <div class="chart-block">
+    <div class="chart-title">IT internal service fund: operating expenses vs. operating revenues, FY2005–FY2025</div>
+    <div class="chart-subtitle">Operating expenses (what it costs to run IT) against operating revenues (what the fund bills other departments). From FY2017 onward the fund consistently bills slightly more than it spends — a deliberate, modest surplus that rebuilds fund balance.</div>
+    <div class="chart-wrap">
+      <div class="chart-canvas-wrap"><canvas id="chart-spend"></canvas></div>
+      <div class="chart-source">
+        Source: City of Troy ACFRs FY2005–FY2025, Internal Service Funds combining statement (IT column). Extracted by <a href="https://github.com/akarpo/cot-it/blob/main/extract_it_spend.py">extract_it_spend.py</a>; series in <a href="https://github.com/akarpo/cot-it/blob/main/it_spend.csv">it_spend.csv</a>.
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-number">+78%</div>
+        <div class="stat-label">Growth in IT operating expenses, FY2005 → FY2025 (~2.9%/yr)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">$2.68M</div>
+        <div class="stat-label">FY2025 IT operating expenses — the most recent audited year</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">$1.35M</div>
+        <div class="stat-label">FY2010 low point, after the 2008 financial crisis</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">~9.7</div>
+        <div class="stat-label">Full-time-equivalent IT staff — roughly flat across the whole period</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>
+      Over the full span IT spending grew a little faster than inflation — the US CPI rose about 67% across FY2005–FY2025 against IT's 78% — but not dramatically so. The real change is not in the dollar total; it is in what those dollars now have to cover.
+    </p>
+  </div>
+
+  <details class="section-sources wide">
+    <summary>Sources &amp; full data — IT operating spend</summary>
+    <div class="panel-body">
+      <ol>
+        <li>
+          <strong>City of Troy Annual Comprehensive Financial Reports, FY2005–FY2025</strong> (21 documents). The figure used is the IT internal service fund's <em>total operating expenses</em> from each ACFR's Internal Service Funds revenues/expenses combining statement. FY2011's ACFR is a scanned PDF and was OCR'd before extraction.
+          <a href="https://github.com/akarpo/cot-it/blob/main/extract_it_spend.py">extract_it_spend.py</a> prints every figure with its source row.
+        </li>
+        <li>
+          Fiscal-year convention: <span class="src-meta">FY2005 = fiscal year 2004/05, ending June 30, 2005.</span>
+        </li>
+      </ol>
+      <div class="table-wrap">
+        <table id="table-spend">
+          <thead><tr><th>Fiscal year</th><th class="num">Operating expenses</th><th class="num">YoY</th><th class="num">Operating revenues</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+</div>
+</section>
+
+<div class="section-divider">·  ·  ·</div>
+
+<!-- SECTION 2: WHAT IT MAINTAINS -->
+<section id="maintains">
+<div class="container">
+  <div class="prose">
+    <h2>2. What IT maintains — devices and applications</h2>
+    <p>
+      Every Adopted Budget's IT section carries a <strong>Performance Indicators</strong> table: how many personal computers, printers, servers, and software applications the department keeps running. The tables overlap two-to-four years between budgets, so most years are cross-checked against several documents. Stitched together, 18 budgets cover FY2004–FY2026.
+    </p>
+  </div>
+
+  <div class="chart-block">
+    <div class="chart-title">Devices and applications the IT department supports, FY2004–FY2026</div>
+    <div class="chart-subtitle">Personal computers are essentially flat for 22 years. Applications supported more than doubled. Printers and servers were first reported in the FY2014 budget — the printer jump in FY2020–FY2022 is a counting-scope change (label printers "not all previously counted"), not new hardware.</div>
+    <div class="chart-wrap">
+      <div class="chart-canvas-wrap"><canvas id="chart-assets"></canvas></div>
+      <div class="chart-source">
+        Source: City of Troy Adopted Budgets, IT-division Performance Indicators tables. Extracted by <a href="https://github.com/akarpo/cot-it/blob/main/extract_it_assets.py">extract_it_assets.py</a>; series in <a href="https://github.com/akarpo/cot-it/blob/main/it_assets.csv">it_assets.csv</a>.
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-number">+140%</div>
+        <div class="stat-label">Applications supported, FY2004 → FY2026 (70 → 168)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">+12%</div>
+        <div class="stat-label">Personal computers, FY2004 → FY2026 (531 → 595) — basically flat</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">~81</div>
+        <div class="stat-label">Servers supported in FY2026, up ~40% from the first count in FY2011</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">~2,000</div>
+        <div class="stat-label">Annual computer help-desk requests — down from a FY2018 peak near 3,700</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="pull-quote">
+    The same ~9–10-person team runs 2.4× as many applications as it did in 2004 — on a device fleet that has barely grown.
+  </p>
+
+  <div class="prose">
+    <p>
+      That is the core finding of the budget data. A city's IT department is not judged by how many PCs it owns — that number tracks headcount, and Troy's is stable. It is judged by the <em>surface area</em> it has to keep running: financial systems, permitting, assessing, GIS, the public website, email, telecom, and dozens of line-of-business applications. That surface area has more than doubled while staffing held flat.
+    </p>
+  </div>
+
+  <details class="section-sources wide">
+    <summary>Sources &amp; full data — assets and applications</summary>
+    <div class="panel-body">
+      <ol>
+        <li>
+          <strong>City of Troy Adopted Budgets with an IT Performance Indicators table</strong> (18 documents, budget years FY2006–FY2026). Each table reports ~4 fiscal years (two Actual columns, one Projected, one Budget); the extractor resolves each year to the best available value — Actual over Projected over Budget, newest budget winning ties.
+        </li>
+        <li>
+          <strong>Gaps and quirks.</strong> The FY2011 budget is a 50-page abridged document and the FY2012–FY2013 budgets dropped the Performance Indicators table — so FY2011–FY2013 device counts come only from neighboring budgets. The FY2022 budget's IT pages use a non-extractable encoded font; they were OCR'd into <a href="https://github.com/akarpo/cot-it/blob/main/budget_pdf/Budget_FY2022_IT_ocr.pdf">Budget_FY2022_IT_ocr.pdf</a>. "Applications supported" was re-baselined at least twice (the ~137→154 step at FY2017 is a reclassification); printers were re-scoped to include label printers in FY2020–FY2022. Values are shown as published.
+        </li>
+      </ol>
+      <div class="table-wrap">
+        <table id="table-assets">
+          <thead><tr><th>FY</th><th class="num">Applications</th><th class="num">PCs</th><th class="num">Printers</th><th class="num">Servers</th><th class="num">Help-desk requests</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+</div>
+</section>
+
+<div class="section-divider">·  ·  ·</div>
+
+<!-- SECTION 3: ASSET SPEND -->
+<section id="asset-spend">
+<div class="container">
+  <div class="prose">
+    <h2>3. What IT spends on assets</h2>
+    <p>
+      "IT asset spend" has two parts in the budgets, and they behave very differently. <strong>Capital</strong> — new servers, major software, infrastructure — is the adopted IT capital budget, and it is lumpy: it spikes when a big project lands and falls back otherwise. <strong>Equipment maintenance</strong> is the running cost of keeping the existing fleet alive, and it is comparatively steady.
+    </p>
+  </div>
+
+  <div class="chart-block">
+    <div class="chart-title">IT capital budget vs. equipment maintenance, FY2004–FY2026</div>
+    <div class="chart-subtitle">Bars are the adopted IT capital budget (left axis); the line is equipment maintenance cost (right axis — note the different scale). Black dots mark the few years the internal service fund actually booked capital outlay in its own statements — most years it shows $0 because IT capital was historically funded by transfers from the Capital Projects Fund.</div>
+    <div class="chart-wrap">
+      <div class="chart-canvas-wrap"><canvas id="chart-asset-spend"></canvas></div>
+      <div class="chart-source">
+        Source: City of Troy Adopted Budgets — adopted IT capital budget and Performance-Indicators equipment-maintenance line; ISF capital actuals from the IT fund statements. Series in <a href="https://github.com/akarpo/cot-it/blob/main/it_assets.csv">it_assets.csv</a>.
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-number">~$190K</div>
+        <div class="stat-label">Average adopted IT capital budget per year, FY2008–FY2026</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">$749K</div>
+        <div class="stat-label">FY2008 capital budget — the largest, for a financial-system replacement</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">$6K–$43K</div>
+        <div class="stat-label">Annual equipment-maintenance range — the steady cost of fleet upkeep</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">5 of 23</div>
+        <div class="stat-label">Years the ISF booked non-zero capital in its own statements — the rest ran through the Capital Projects Fund</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>
+      The accounting here is genuinely subtle, and worth stating plainly: the adopted capital <em>budget</em> is the consistent, comparable series — but in most years the IT fund's own statements show <strong>$0 of capital actually booked</strong>, because historically the city funded IT capital through operating transfers from its Capital Projects Fund rather than through the ISF's capital line. Only five years (FY2007, FY2008, FY2017, FY2023, FY2024) show non-zero ISF capital actuals. The bars below are therefore "what the city planned to invest," and should be read as such.
+    </p>
+  </div>
+
+  <details class="section-sources wide">
+    <summary>Sources &amp; full data — asset spend</summary>
+    <div class="panel-body">
+      <ol>
+        <li>
+          <strong>Adopted IT capital budget</strong> — taken from each budget's own budget-year column (the "Proposed"/"Final"/budget figure). It is the most consistently reported capital measure across all 18 budgets.
+        </li>
+        <li>
+          <strong>ISF capital actuals</strong> — the IT internal service fund's "Capital Outlay" / "Capital Expenditures" line, which is $0 in most years; the non-zero years are in the <code>isf_capital_actual</code> column of <a href="https://github.com/akarpo/cot-it/blob/main/it_assets.csv">it_assets.csv</a>.
+        </li>
+        <li>
+          <strong>Equipment maintenance</strong> — the Performance-Indicators "Equipment Maintenance Costs" line, an operating (not capital) figure: the cost of maintaining the existing device fleet.
+        </li>
+      </ol>
+      <div class="table-wrap">
+        <table id="table-asset-spend">
+          <thead><tr><th>FY</th><th class="num">IT capital budget (adopted)</th><th class="num">ISF capital actually booked</th><th class="num">Equipment maintenance</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+</div>
+</section>
+
+<div class="section-divider">·  ·  ·</div>
+
+<!-- SECTION 4: METHOD -->
+<section id="method">
+<div class="container">
+  <div class="prose">
+    <h2>4. Method &amp; caveats</h2>
+    <p>
+      This is a working analytical record, not an audit. Everything is reproducible from the <a href="https://github.com/akarpo/cot-it">cot-it repository</a> — the source PDFs, the extraction scripts, and the resulting CSVs are all there.
+    </p>
+    <h4>How the numbers were pulled</h4>
+    <p>
+      Two pdfplumber-based extractors do the work. <a href="https://github.com/akarpo/cot-it/blob/main/extract_it_spend.py">extract_it_spend.py</a> finds the Internal Service Funds combining statement in each ACFR and pulls the IT column's operating expenses and revenues. <a href="https://github.com/akarpo/cot-it/blob/main/extract_it_assets.py">extract_it_assets.py</a> encodes every Performance-Indicators cell read from the budgets — each tagged with its source budget and column type — then resolves each fiscal year to a single best value (Actual beats Projected beats Budget; the newest budget wins ties) and prints the full provenance.
+    </p>
+    <h4>What to be careful about</h4>
+    <ul>
+      <li><strong>"IT spend" is the ISF operating-expense figure</strong> — the most consistent measure across all 21 ACFRs. It is not a "general fund IT department budget"; the fund recovers its costs by billing other departments.</li>
+      <li><strong>Capital is budget, not actuals.</strong> The adopted IT capital budget is consistent and comparable; the ISF capital <em>actuals</em> are $0 in most years because IT capital ran through the Capital Projects Fund. See Section 3.</li>
+      <li><strong>"Applications supported" is the budgets' own metric</strong> — commercial/publicly-available software, not in-house code, and not broken out by web service. It was re-baselined at least twice.</li>
+      <li><strong>FY2011 sources were OCR'd.</strong> The FY2011 ACFR is a scanned PDF; the FY2022 budget's IT pages were a non-extractable encoded font. Both were OCR'd before extraction — the FY2022 OCR corrected two previously-estimated figures.</li>
+      <li><strong>FY2011–FY2013 have no device counts</strong> from their own budgets (abridged or table-dropped); those years lean on neighboring budgets.</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container prose">
+    <h4>About this analysis</h4>
+    <p>
+      Compiled from City of Troy public records. Each section above carries its own collapsible source list and full data table. Methodology, source documents, extraction scripts, and the CSVs are open at <a href="https://github.com/akarpo/cot-it">github.com/akarpo/cot-it</a>.
+    </p>
+    <p>
+      Corrections and disagreements welcome — open an issue on GitHub.
+    </p>
+    <div class="colophon">
+      <p>
+        Underlying data: 21 City of Troy ACFRs (FY2005–FY2025) and 22 Adopted Budget documents (FY2005–FY2026), of which 18 carry an IT-division Performance Indicators table. Source PDFs over 25&nbsp;MB are hosted on Cloudflare R2; see the repository's <a href="https://github.com/akarpo/cot-it/blob/main/R2_MANIFEST.md">R2_MANIFEST.md</a>.
+      </p>
+      <p>Last updated May 14, 2026.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ====================================================================
+// DATA — all figures from the cot-it repository's CSVs.
+// ====================================================================
+const DATA = {
+  // it_spend.csv — IT internal service fund, FY2005–FY2025 (raw dollars)
+  spend: {
+    years: ['FY05','FY06','FY07','FY08','FY09','FY10','FY11','FY12','FY13','FY14','FY15','FY16','FY17','FY18','FY19','FY20','FY21','FY22','FY23','FY24','FY25'],
+    expenses: [1500672,1430321,1653649,1583195,1570371,1352419,1395019,1499330,1708100,1778680,2056254,1902658,1821152,2028008,1962479,2152469,2088314,2065383,2131109,2383834,2678683],
+    revenues: [1322190,1430493,1515678,1605304,1634795,1576310,1365821,1553645,1552009,1509585,1809404,1845450,1963408,2057212,2150401,2205776,2252386,2342368,2517508,2620404,2681092],
+  },
+  // it_assets.csv — IT-division Performance Indicators, FY2004–FY2026
+  assets: {
+    years: ['FY04','FY05','FY06','FY07','FY08','FY09','FY10','FY11','FY12','FY13','FY14','FY15','FY16','FY17','FY18','FY19','FY20','FY21','FY22','FY23','FY24','FY25','FY26'],
+    applications: [70,74,79,87,99,107,104,109,115,123,151,154,154,162,164,172,163,164,164,168,168,168,168],
+    pcs:          [531,551,568,588,588,588,566,481,475,484,484,484,484,498,503,502,506,512,512,546,566,585,595],
+    printers:     [null,null,null,null,null,null,null,199,null,136,140,140,140,145,145,155,195,205,205,136,136,138,138],
+    servers:      [null,null,null,null,null,null,null,58,65,68,66,63,63,70,72,74,73,75,75,76,85,82,81],
+    helpdesk:     [1520,1620,1800,1890,2268,2000,2200,2507,2423,2314,3079,3028,3028,3207,3683,3043,2864,3040,2250,2551,2206,2000,2000],
+    capitalBudget:[null,null,null,null,749000,103100,215000,70910,84430,181500,46000,238500,165000,145000,120000,125000,500000,150000,120000,120000,40000,290000,148000],
+    equipMaint:   [28450,25560,15790,26500,19388,30000,22200,23070,21320,30159,25826,19376,19376,14000,13090,6743,6556,15500,14014,18236,22132,37000,42920],
+    isfActual:    [null,null,null,134534,267890,null,null,null,null,null,null,null,null,39966,null,null,null,null,null,116071,290000,null,null],
+  },
+};
+
+// ====================================================================
+// CHART DEFAULTS
+// ====================================================================
+Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.color = '#1a1a1a';
+Chart.defaults.borderColor = '#e6e2d6';
+Chart.defaults.plugins.legend.labels.boxWidth = 10;
+Chart.defaults.plugins.legend.labels.boxHeight = 10;
+Chart.defaults.plugins.legend.labels.padding = 16;
+Chart.defaults.plugins.legend.labels.font = { family: "'Inter', sans-serif", size: 12 };
+Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(26,26,26,0.94)';
+Chart.defaults.plugins.tooltip.titleFont = { family: "'Inter', sans-serif", weight: '600', size: 12 };
+Chart.defaults.plugins.tooltip.bodyFont = { family: "'Inter', sans-serif", size: 12 };
+Chart.defaults.plugins.tooltip.padding = 12;
+Chart.defaults.plugins.tooltip.cornerRadius = 4;
+Chart.defaults.plugins.tooltip.boxPadding = 6;
+
+const COLORS = {
+  accent:   '#2d6a9f',  // civic blue
+  blueSoft: 'rgba(45,106,159,0.85)',
+  sky:      '#7aa6c4',
+  skySoft:  'rgba(122,166,196,0.80)',
+  green:    '#2e6e4f',
+  gold:     '#c08a3e',
+  rust:     '#b8442f',
+  purple:   '#8b5a8c',
+  purpleSoft:'rgba(139,90,140,0.82)',
+  neutral:  '#7a6f55',
+  ink:      '#1a1a1a',
+};
+
+const usd  = (v) => '$' + Math.round(v).toLocaleString();
+const usdK = (v) => '$' + Math.round(v/1000).toLocaleString() + 'K';
+const usdM = (v) => '$' + (v/1e6).toFixed(2) + 'M';
+
+const yearAxis = { grid: { display: false }, ticks: { color: '#5a5a5a' } };
+
+// ====================================================================
+// CHART 1 — IT operating spend (expenses vs revenues)
+// ====================================================================
+new Chart(document.getElementById('chart-spend'), {
+  type: 'bar',
+  data: {
+    labels: DATA.spend.years,
+    datasets: [
+      {
+        label: 'Operating expenses',
+        data: DATA.spend.expenses,
+        backgroundColor: COLORS.blueSoft,
+        borderColor: COLORS.accent,
+        borderWidth: 0,
+        borderRadius: 3,
+      },
+      {
+        label: 'Operating revenues (billed to departments)',
+        data: DATA.spend.revenues,
+        backgroundColor: COLORS.skySoft,
+        borderColor: COLORS.sky,
+        borderWidth: 0,
+        borderRadius: 3,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { position: 'bottom' },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => `${ctx.dataset.label}: ${usd(ctx.parsed.y)}`,
+          afterBody: (ctxs) => {
+            const e = ctxs.find(c => c.datasetIndex === 0);
+            const r = ctxs.find(c => c.datasetIndex === 1);
+            if (e && r) {
+              const d = r.parsed.y - e.parsed.y;
+              return [`Revenue over expense: ${d >= 0 ? '+' : '−'}${usd(Math.abs(d))}`];
+            }
+            return [];
+          },
+        },
+      },
+    },
+    scales: {
+      x: yearAxis,
+      y: {
+        beginAtZero: false,
+        suggestedMin: 1200000,
+        ticks: { callback: (v) => usdM(v) },
+        grid: { color: '#f0ecdf' },
+        title: { display: true, text: 'Dollars', font: { size: 11 } },
+      },
+    },
+  },
+});
+
+// ====================================================================
+// CHART 2 — devices & applications
+// ====================================================================
+new Chart(document.getElementById('chart-assets'), {
+  type: 'line',
+  data: {
+    labels: DATA.assets.years,
+    datasets: [
+      {
+        label: 'Personal computers',
+        data: DATA.assets.pcs,
+        borderColor: COLORS.accent,
+        backgroundColor: COLORS.accent,
+        borderWidth: 2.5, tension: 0.2, pointRadius: 3, pointHoverRadius: 5,
+      },
+      {
+        label: 'Applications supported',
+        data: DATA.assets.applications,
+        borderColor: COLORS.rust,
+        backgroundColor: COLORS.rust,
+        borderWidth: 2.5, tension: 0.2, pointRadius: 3, pointHoverRadius: 5,
+      },
+      {
+        label: 'Printers',
+        data: DATA.assets.printers,
+        borderColor: COLORS.green,
+        backgroundColor: COLORS.green,
+        borderWidth: 2, tension: 0.2, pointRadius: 3, pointHoverRadius: 5,
+        spanGaps: false,
+      },
+      {
+        label: 'Servers',
+        data: DATA.assets.servers,
+        borderColor: COLORS.gold,
+        backgroundColor: COLORS.gold,
+        borderWidth: 2, tension: 0.2, pointRadius: 3, pointHoverRadius: 5,
+        spanGaps: false,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { position: 'bottom' },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => ctx.parsed.y == null
+            ? `${ctx.dataset.label}: not reported`
+            : `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}`,
+        },
+      },
+    },
+    scales: {
+      x: yearAxis,
+      y: {
+        beginAtZero: true,
+        grid: { color: '#f0ecdf' },
+        title: { display: true, text: 'Count', font: { size: 11 } },
+      },
+    },
+  },
+});
+
+// ====================================================================
+// CHART 3 — asset spend: capital budget vs equipment maintenance
+// ====================================================================
+new Chart(document.getElementById('chart-asset-spend'), {
+  type: 'bar',
+  data: {
+    labels: DATA.assets.years,
+    datasets: [
+      {
+        type: 'bar',
+        label: 'IT capital budget (adopted)',
+        data: DATA.assets.capitalBudget,
+        backgroundColor: COLORS.purpleSoft,
+        borderColor: COLORS.purple,
+        borderWidth: 0,
+        borderRadius: 3,
+        yAxisID: 'y',
+        order: 3,
+      },
+      {
+        type: 'scatter',
+        label: 'ISF capital actually booked',
+        data: DATA.assets.isfActual.map((v, i) => v == null ? null : { x: DATA.assets.years[i], y: v }),
+        backgroundColor: COLORS.ink,
+        borderColor: COLORS.ink,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        yAxisID: 'y',
+        order: 1,
+      },
+      {
+        type: 'line',
+        label: 'Equipment maintenance cost (right axis)',
+        data: DATA.assets.equipMaint,
+        borderColor: COLORS.rust,
+        backgroundColor: COLORS.rust,
+        borderWidth: 2.5,
+        tension: 0.2,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        yAxisID: 'y1',
+        order: 2,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { position: 'bottom' },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => {
+            const v = ctx.parsed.y;
+            if (v == null) return null;
+            return `${ctx.dataset.label}: ${usd(v)}`;
+          },
+        },
+      },
+    },
+    scales: {
+      x: yearAxis,
+      y: {
+        beginAtZero: true,
+        ticks: { callback: (v) => usdK(v) },
+        grid: { color: '#f0ecdf' },
+        title: { display: true, text: 'Capital ($)', font: { size: 11 } },
+      },
+      y1: {
+        position: 'right',
+        beginAtZero: true,
+        suggestedMax: 60000,
+        ticks: { callback: (v) => usdK(v) },
+        grid: { drawOnChartArea: false },
+        title: { display: true, text: 'Equipment maintenance ($)', font: { size: 11 } },
+      },
+    },
+  },
+});
+
+// ====================================================================
+// DATA TABLES — built from the same DATA object
+// ====================================================================
+(function buildTables() {
+  const n = (v) => v == null ? '<span class="src-meta">—</span>' : v.toLocaleString();
+  const d = (v) => v == null ? '<span class="src-meta">—</span>' : usd(v);
+
+  // Spend table
+  const sb = document.querySelector('#table-spend tbody');
+  DATA.spend.years.forEach((yr, i) => {
+    const exp = DATA.spend.expenses[i], rev = DATA.spend.revenues[i];
+    const yoy = i === 0 ? '—' : ((exp / DATA.spend.expenses[i-1] - 1) * 100).toFixed(1) + '%';
+    sb.insertAdjacentHTML('beforeend',
+      `<tr><td>${yr}</td><td class="num">${d(exp)}</td><td class="num">${yoy}</td><td class="num">${d(rev)}</td></tr>`);
+  });
+
+  // Assets table
+  const ab = document.querySelector('#table-assets tbody');
+  DATA.assets.years.forEach((yr, i) => {
+    ab.insertAdjacentHTML('beforeend',
+      `<tr><td>${yr}</td><td class="num">${n(DATA.assets.applications[i])}</td>`
+      + `<td class="num">${n(DATA.assets.pcs[i])}</td><td class="num">${n(DATA.assets.printers[i])}</td>`
+      + `<td class="num">${n(DATA.assets.servers[i])}</td><td class="num">${n(DATA.assets.helpdesk[i])}</td></tr>`);
+  });
+
+  // Asset-spend table
+  const cb = document.querySelector('#table-asset-spend tbody');
+  DATA.assets.years.forEach((yr, i) => {
+    cb.insertAdjacentHTML('beforeend',
+      `<tr><td>${yr}</td><td class="num">${d(DATA.assets.capitalBudget[i])}</td>`
+      + `<td class="num">${d(DATA.assets.isfActual[i])}</td><td class="num">${d(DATA.assets.equipMaint[i])}</td></tr>`);
+  });
+})();
+</script>
+
+</body>
+</html>

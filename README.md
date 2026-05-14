@@ -1,9 +1,12 @@
 # cot-it — City of Troy IT spending from ACFRs (FY2005–FY2025)
 
 Answers: **What has the City of Troy spent on Information Technology over time?**
-— extracted from 21 years of the City's Annual Comprehensive Financial Reports.
+— extracted from 21 years of the City's Annual Comprehensive Financial Reports
+and 18 Adopted Budgets.
 
-Self-contained — open this folder in Claude Code to continue the analysis.
+The analysis is published as a single-page site, [`index.html`](./index.html)
+(interactive charts + data tables). Self-contained — open this folder in Claude
+Code to continue the analysis.
 
 ---
 
@@ -135,6 +138,7 @@ Chart: `it_assets_chart.png`. Data: `it_assets.csv`.
 
 | Path | What it is |
 |------|------------|
+| `index.html` | The published single-page site — hero, TL;DR, three Chart.js sections (IT spend / what IT maintains / asset spend), methodology, and per-section collapsible source panels with full data tables. Self-contained; this is what Cloudflare serves. |
 | `extract_it_spend.py` | Coordinate-aware (pdfplumber) extractor. Finds the ISF revenues/expenses combining statement in each ACFR, handles both single-page and wide-table-wrapped layouts, pulls the IT column's operating expenses & revenues. Prints every figure with its source row; writes `it_spend.csv`. |
 | `build_chart.py` | Reads `it_spend.csv`, writes `it_spend_chart.png`, prints the summary table + growth stats. |
 | `it_spend.csv` | The 21-year time series (fiscal_year, it_operating_expenses, it_operating_revenues). |
@@ -175,7 +179,9 @@ source PDFs >25 MB (`ACFR_2011_ocr.pdf`, `Budget_FY2017/2025/2026.pdf`) —
 
 This repo is mirrored to Cloudflare as a **Workers Static Assets** project:
 push to `main` on GitHub triggers a deploy, and Cloudflare serves the repo
-root directly (no build step, no `index.html` — it's a file-listing site).
+root directly (no build step). The site entry point is
+[`index.html`](./index.html) — a self-contained single-page analysis with
+interactive charts; the source PDFs and CSVs remain browsable alongside it.
 
 Two structural constraints come from Cloudflare's **25 MiB per-asset limit**,
 both handled the same way the sibling `tsd-budget` project handles them:
