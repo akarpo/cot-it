@@ -6,7 +6,7 @@
     "sha256": "838d292b85e02719893fe6219070b4fa8733da25ac208f550ec747c458653b6c",
     "stub": "acfr_pdf/ACFR_2011_ocr.pdf.r2.md",
     "r2_url": "https://media.karpowitsch.org/cot-it/acfr_pdf/ACFR_2011_ocr.pdf",
-    "status": "pending"
+    "status": "uploaded"
   },
   {
     "rel": "budget_pdf/Budget_FY2017.pdf",
@@ -15,24 +15,24 @@
     "sha256": "93ef156e7e769711ffba85d3d238ad8ba633fdca6c7fb7bb6dbdaca00f04e028",
     "stub": "budget_pdf/Budget_FY2017.pdf.r2.md",
     "r2_url": "https://media.karpowitsch.org/cot-it/budget_pdf/Budget_FY2017.pdf",
-    "status": "pending"
+    "status": "uploaded"
   },
   {
     "rel": "budget_pdf/Budget_FY2025.pdf",
-    "size_mb": 36.70,
+    "size_mb": 36.7,
     "size_bytes": 38479378,
     "sha256": "097c585952b7981d0ddef311ba5cf6181488f8ea776dacfbcaa622dabcb4466d",
     "stub": "budget_pdf/Budget_FY2025.pdf.r2.md",
     "r2_url": "https://media.karpowitsch.org/cot-it/budget_pdf/Budget_FY2025.pdf",
-    "status": "pending"
+    "status": "uploaded"
   },
   {
     "rel": "budget_pdf/Budget_FY2026.pdf",
-    "size_mb": 36.30,
+    "size_mb": 36.3,
     "size_bytes": 38064551,
     "sha256": "e883b4b6a96d42f132e6da9eea7c98edbe7974abd59b32a41d93f9f166221261",
     "stub": "budget_pdf/Budget_FY2026.pdf.r2.md",
     "r2_url": "https://media.karpowitsch.org/cot-it/budget_pdf/Budget_FY2026.pdf",
-    "status": "pending"
+    "status": "uploaded"
   }
 ]

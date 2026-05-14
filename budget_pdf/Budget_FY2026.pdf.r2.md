@@ -13,7 +13,7 @@ per-asset limit, so it is kept out of the git repo. Restore it locally with
 | Source | City of Troy public records (see README "Data sources") |
 | R2 URL | [https://media.karpowitsch.org/cot-it/budget_pdf/Budget_FY2026.pdf](https://media.karpowitsch.org/cot-it/budget_pdf/Budget_FY2026.pdf) |
 
-**Status:** `pending R2 upload` — run `python3 upload_r2.py`.
+**Status:** uploaded to R2.
 
 To verify integrity after download:
 ```bash
