@@ -1,0 +1,32 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Temp
+*.tmp
+*.log
+
+# Cloudflare Workers Static Assets build output (created by build.sh)
+/dist/
+
+# Wrangler local state (telemetry / cache) — auto-created by `wrangler r2`/etc.
+/.wrangler/
+
+# Files >25MB externalized to Cloudflare R2 (see *.r2.md sibling stubs and
+# R2_MANIFEST.md). Restore them locally with: python3 fetch_r2.py
+/acfr_pdf/ACFR_2011_ocr.pdf
+/budget_pdf/Budget_FY2017.pdf
+/budget_pdf/Budget_FY2025.pdf
+/budget_pdf/Budget_FY2026.pdf
